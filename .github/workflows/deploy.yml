@@ -1,0 +1,50 @@
+name: CD Deployment
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+
+    environment: staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy staging
+        run: |
+          docker compose down
+          docker compose up -d --build
+
+      - name: Health Check
+        run: |
+          sleep 15
+          curl -f http://localhost:3000 || exit 1
+          curl -f http://localhost:3001/health || exit 1
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy production
+        run: |
+          docker compose -f docker-compose.prod.yml down
+          docker compose -f docker-compose.prod.yml up -d --build
+
+      - name: Health Check
+        run: |
+          sleep 15
+          curl -f http://localhost:3000 || exit 1
+          curl -f http://localhost:3001/health || exit 1
