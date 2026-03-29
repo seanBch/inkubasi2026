@@ -62,6 +62,42 @@ Buat konfigurasi Docker dan pastikan semua service berjalan dengan benar di ling
 
 ---
 
+## Tugas 3 — CI Pipeline dengan GitHub Actions  
+
+Bangun **Continuous Integration pipeline** yang otomatis berjalan setiap ada push atau pull request ke repository.
+
+---
+
+### Stage 1 — Code Quality
+
+- **Linting:** ESLint untuk frontend (Next.js) dan backend (NestJS)
+- **Format check:** Prettier
+
+---
+
+### Stage 2 — Testing
+
+- **Unit tests:** Jest untuk NestJS services dan controllers
+
+---
+
+### Stage 3 — Build
+
+- Build Docker image untuk `client` dan `server`
+- Tag image dengan:
+  - `latest`
+  - branch name
+  - commit SHA
+- Push image ke registry (Docker Hub atau GitHub Container Registry)
+
+---
+
+### Konfigurasi wajib di semua stage
+
+- Environment secrets management menggunakan GitHub Secrets
+
+---
+
 ## Tugas 4 — CD Pipeline & Deployment  
 
 Bangun **Continuous Deployment pipeline** untuk men-deploy aplikasi MODERNO ke environment staging dan production secara terstruktur menggunakan beberapa stage deployment.
